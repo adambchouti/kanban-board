@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { BoardComponent } from './board/board.component';
 import { BoardItemComponent } from './board-item/board-item.component';
 import { BoardRoutingModule } from './board-routing.module';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
   declarations: [BoardComponent, BoardItemComponent],
   imports: [
     CommonModule,
+    DragDropModule,
     BoardRoutingModule
   ]
 })
