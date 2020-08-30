@@ -3,6 +3,14 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {MatDialog} from '@angular/material/dialog';
 import { BoardDialogNewItemComponent } from '../board-dialog-new-item/board-dialog-new-item.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Item } from '../item.model';
+
+export enum Board {
+  TODO,
+  PROGRESS,
+  BLOCKED,
+  DONE
+}
 
 @Component({
   selector: 'app-board',
@@ -10,20 +18,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+  board = Board;
   newItem: string;
 
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
+  todo: Item[] = [
+    {description: 'Get to work', created_date: Date.now()},
+    {description: 'Pick up groceries', created_date: Date.now()},
+    {description: 'Go home', created_date: Date.now()},
+    {description: 'Fall asleep', created_date: Date.now()}
   ];
 
-  progress = [];
+  progress: Item[] = [];
 
-  blocked = [];
+  blocked: Item[] = [];
 
-  done = [];
+  done: Item[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -44,17 +53,39 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  openDialog(): void {
+  openDialog(boardItem: Board): void {
     const dialogRef = this.dialog.open(BoardDialogNewItemComponent, {
       width: '250px',
       data: {item: this.newItem}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: String) => {
       console.log('The dialog was closed');
       console.log(result);
       if (result) {
-        this.todo.push(result);
+        switch(boardItem) { 
+          case Board.TODO: {
+            this.todo.push({description: result, created_date: Date.now()});
+            break; 
+          } 
+          case Board.PROGRESS: { 
+            this.progress.push({description: result, created_date: Date.now()});
+             break; 
+          } 
+          case Board.BLOCKED: { 
+            this.blocked.push({description: result, created_date: Date.now()});
+            break; 
+          } 
+          case Board.DONE: { 
+            this.done.push({description: result, created_date: Date.now()});
+            break; 
+          } 
+          default: { 
+            // Shouldn't get here
+            console.log('Something went wrong');
+            break; 
+          } 
+       } 
       } else {
         this.openSnackBar();
       }

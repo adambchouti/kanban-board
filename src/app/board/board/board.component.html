@@ -1,53 +1,77 @@
-<div class="new-item">
+<!-- <div class="new-item">
   <button mat-raised-button color="primary" (click)="openDialog()">Add Item</button>
-</div>
+</div> -->
 
 <div cdkDropListGroup>
   <div class="example-container">
-    <h2>To do</h2>
+    <mat-toolbar color="primary" class="navbar" style="background: saddlebrown;">
+      <span>To do</span>
+      <span class="spacer"></span>
+      <button mat-icon-button class="btn-icon" (click)="openDialog(board.TODO)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
 
     <div
       cdkDropList
       [cdkDropListData]="todo"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+      <div *ngFor="let item of todo" cdkDrag><app-board-item [item]="item"></app-board-item></div>
     </div>
   </div>
 
   <div class="example-container">
-    <h2>In Progress</h2>
+    <mat-toolbar color="primary" class="navbar">
+      <span>In Progress</span>
+      <span class="spacer"></span>
+      <button mat-icon-button class="btn-icon" (click)="openDialog(board.PROGRESS)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
 
     <div
       cdkDropList
       [cdkDropListData]="progress"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of progress" cdkDrag>{{item}}</div>
+      <div *ngFor="let item of progress" cdkDrag><app-board-item [item]="item"></app-board-item></div>
     </div>
   </div>
 
   <div class="example-container">
-    <h2>Blocked</h2>
+    <mat-toolbar color="warn" class="navbar">
+      <span>Blocked</span>
+      <span class="spacer"></span>
+      <button mat-icon-button class="btn-icon" (click)="openDialog(board.BLOCKED)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
 
     <div
       cdkDropList
       [cdkDropListData]="blocked"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of blocked" cdkDrag>{{item}}</div>
+      <div *ngFor="let item of blocked" cdkDrag><app-board-item [item]="item"></app-board-item></div>
     </div>
   </div>
 
   <div class="example-container">
-    <h2>Done</h2>
+    <mat-toolbar color="primary" class="navbar" style="background: green;">
+      <span>Done</span>
+      <span class="spacer"></span>
+      <button mat-icon-button class="btn-icon" (click)="openDialog(board.DONE)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-toolbar>
 
     <div
       cdkDropList
       [cdkDropListData]="done"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+      <div *ngFor="let item of done" cdkDrag><app-board-item [item]="item"></app-board-item></div>
     </div>
   </div>
 </div>
