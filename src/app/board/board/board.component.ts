@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {MatDialog} from '@angular/material/dialog';
+import { BoardDialogNewItemComponent } from '../board-dialog-new-item/board-dialog-new-item.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-board',
@@ -7,6 +10,8 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+  newItem: string;
+
   todo = [
     'Get to work',
     'Pick up groceries',
@@ -20,7 +25,10 @@ export class BoardComponent implements OnInit {
 
   done = [];
 
-  constructor() { }
+  constructor(
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
   }
@@ -34,6 +42,31 @@ export class BoardComponent implements OnInit {
                         event.previousIndex,
                         event.currentIndex);
     }
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(BoardDialogNewItemComponent, {
+      width: '250px',
+      data: {item: this.newItem}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      if (result) {
+        this.todo.push(result);
+      } else {
+        this.openSnackBar();
+      }
+    });
+  }
+
+  openSnackBar() {
+    this._snackBar.open('Cannot be empty', 'End now', {
+      duration: 5000,
+      horizontalPosition: "center",
+      verticalPosition: "top",
+    });
   }
 
 }
